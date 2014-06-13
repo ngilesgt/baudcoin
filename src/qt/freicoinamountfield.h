@@ -1,5 +1,5 @@
-#ifndef FREICOINFIELD_H
-#define FREICOINFIELD_H
+#ifndef BAUDCOINFIELD_H
+#define BAUDCOINFIELD_H
 
 #include "bignum.h" // for mpq
 
@@ -10,14 +10,14 @@ class QDoubleSpinBox;
 class QValueComboBox;
 QT_END_NAMESPACE
 
-/** Widget for entering freicoin amounts.
+/** Widget for entering baudcoin amounts.
   */
-class FreicoinAmountField: public QWidget
+class BaudcoinAmountField: public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(qint64 value READ value WRITE setValue NOTIFY textChanged USER true)
 public:
-    explicit FreicoinAmountField(QWidget *parent = 0);
+    explicit BaudcoinAmountField(QWidget *parent = 0);
 
     qint64 value(bool *valid=0) const;
     void setValue(qint64 value);
@@ -61,4 +61,4 @@ private slots:
 };
 
 
-#endif // FREICOINFIELD_H
+#endif // BAUDCOINFIELD_H

@@ -1,91 +1,91 @@
-#include "freicoinunits.h"
+#include "baudcoinunits.h"
 
 #include <QStringList>
 
-FreicoinUnits::FreicoinUnits(QObject *parent):
+BaudcoinUnits::BaudcoinUnits(QObject *parent):
         QAbstractListModel(parent),
         unitlist(availableUnits())
 {
 }
 
-QList<FreicoinUnits::Unit> FreicoinUnits::availableUnits()
+QList<BaudcoinUnits::Unit> BaudcoinUnits::availableUnits()
 {
-    QList<FreicoinUnits::Unit> unitlist;
-    unitlist.append(FRC);
-    unitlist.append(mFRC);
-    unitlist.append(uFRC);
+    QList<BaudcoinUnits::Unit> unitlist;
+    unitlist.append(BDC);
+    unitlist.append(mBDC);
+    unitlist.append(uBDC);
     return unitlist;
 }
 
-bool FreicoinUnits::valid(int unit)
+bool BaudcoinUnits::valid(int unit)
 {
     switch(unit)
     {
-    case FRC:
-    case mFRC:
-    case uFRC:
+    case BDC:
+    case mBDC:
+    case uBDC:
         return true;
     default:
         return false;
     }
 }
 
-QString FreicoinUnits::name(int unit)
+QString BaudcoinUnits::name(int unit)
 {
     switch(unit)
     {
-    case FRC: return QString("FRC");
-    case mFRC: return QString("mFRC");
-    case uFRC: return QString::fromUtf8("μFRC");
+    case BDC: return QString("BDC");
+    case mBDC: return QString("mBDC");
+    case uBDC: return QString::fromUtf8("μBDC");
     default: return QString("???");
     }
 }
 
-QString FreicoinUnits::description(int unit)
+QString BaudcoinUnits::description(int unit)
 {
     switch(unit)
     {
-    case FRC: return QString("Freicoins");
-    case mFRC: return QString("Milli-Freicoins (1 / 1,000)");
-    case uFRC: return QString("Micro-Freicoins (1 / 1,000,000)");
+    case BDC: return QString("Baudcoins");
+    case mBDC: return QString("Milli-Baudcoins (1 / 1,000)");
+    case uBDC: return QString("Micro-Baudcoins (1 / 1,000,000)");
     default: return QString("???");
     }
 }
 
-mpq FreicoinUnits::factor(int unit)
+mpq BaudcoinUnits::factor(int unit)
 {
     switch(unit)
     {
-    case uFRC: return mpq("100/1");
-    case mFRC: return mpq("100000/1");
+    case uBDC: return mpq("100/1");
+    case mBDC: return mpq("100000/1");
     default:
-    case FRC:  return mpq("100000000/1");
+    case BDC:  return mpq("100000000/1");
     }
 }
 
-int FreicoinUnits::amountDigits(int unit)
+int BaudcoinUnits::amountDigits(int unit)
 {
     switch(unit)
     {
-    case FRC: return 8; // <100,000,000 (# digits, without commas)
-    case mFRC: return 11; // <100,000,000,000
-    case uFRC: return 14; // <100,000,000,000,000
+    case BDC: return 8; // <100,000,000 (# digits, without commas)
+    case mBDC: return 11; // <100,000,000,000
+    case uBDC: return 14; // <100,000,000,000,000
     default: return 0;
     }
 }
 
-int FreicoinUnits::decimals(int unit)
+int BaudcoinUnits::decimals(int unit)
 {
     switch(unit)
     {
-    case FRC: return 8;
-    case mFRC: return 5;
-    case uFRC: return 2;
+    case BDC: return 8;
+    case mBDC: return 5;
+    case uBDC: return 2;
     default: return 0;
     }
 }
 
-QString FreicoinUnits::format(int unit, const mpq& n, bool fPlus)
+QString BaudcoinUnits::format(int unit, const mpq& n, bool fPlus)
 {
     // Note: not using straight sprintf here because we do NOT want
     // localized number formatting.
@@ -99,12 +99,12 @@ QString FreicoinUnits::format(int unit, const mpq& n, bool fPlus)
     return QString::fromStdString(str);
 }
 
-QString FreicoinUnits::formatWithUnit(int unit, const mpq& amount, bool plussign)
+QString BaudcoinUnits::formatWithUnit(int unit, const mpq& amount, bool plussign)
 {
     return format(unit, amount, plussign) + QString(" ") + name(unit);
 }
 
-bool FreicoinUnits::parse(int unit, const QString &value, mpq *val_out)
+bool BaudcoinUnits::parse(int unit, const QString &value, mpq *val_out)
 {
     mpq ret_value;
     if (!ParseMoney(value.toStdString(), ret_value))
@@ -116,13 +116,13 @@ bool FreicoinUnits::parse(int unit, const QString &value, mpq *val_out)
     return true;
 }
 
-int FreicoinUnits::rowCount(const QModelIndex &parent) const
+int BaudcoinUnits::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return unitlist.size();
 }
 
-QVariant FreicoinUnits::data(const QModelIndex &index, int role) const
+QVariant BaudcoinUnits::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
     if(row >= 0 && row < unitlist.size())

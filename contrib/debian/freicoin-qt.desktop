@@ -1,12 +1,12 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Freicoin
-Comment=Freicoin P2P Cryptocurrency
-Comment[fr]=Freicoin, monnaie virtuelle cryptographique pair à pair
-Comment[tr]=Freicoin, eşten eşe kriptografik sanal para birimi
-Exec=/usr/bin/freicoin-qt
+Name=Baudcoin
+Comment=Baudcoin P2P Cryptocurrency
+Comment[fr]=Baudcoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Baudcoin, eşten eşe kriptografik sanal para birimi
+Exec=/usr/bin/baudcoin-qt
 Terminal=false
 Type=Application
-Icon=/usr/share/pixmaps/freicoin80.xpm
-MimeType=x-scheme-handler/freicoin;
+Icon=/usr/share/pixmaps/baudcoin80.xpm
+MimeType=x-scheme-handler/baudcoin;
 Categories=Office;

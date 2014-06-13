@@ -1,7 +1,7 @@
 #include "qrcodedialog.h"
 #include "ui_qrcodedialog.h"
 
-#include "freicoinunits.h"
+#include "baudcoinunits.h"
 #include "guiconstants.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
@@ -44,7 +44,7 @@ void QRCodeDialog::setModel(OptionsModel *model)
     if (model)
         connect(model, SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
 
-    // update the display unit, to not use the default ("FRC")
+    // update the display unit, to not use the default ("BDC")
     updateDisplayUnit();
 }
 
@@ -83,7 +83,7 @@ void QRCodeDialog::genCode()
 
 QString QRCodeDialog::getURI()
 {
-    QString ret = QString("freicoin:%1").arg(address);
+    QString ret = QString("baudcoin:%1").arg(address);
     int paramCount = 0;
 
     ui->outUri->clear();
@@ -92,8 +92,8 @@ QString QRCodeDialog::getURI()
     {
         if (ui->lnReqAmount->validate())
         {
-            // even if we allow a non FRC unit input in lnReqAmount, we generate the URI with FRC as unit (as defined in BIP21)
-            ret += QString("?amount=%1").arg(FreicoinUnits::format(FreicoinUnits::FRC, ui->lnReqAmount->valueAsMpq()));
+            // even if we allow a non BDC unit input in lnReqAmount, we generate the URI with BDC as unit (as defined in BIP21)
+            ret += QString("?amount=%1").arg(BaudcoinUnits::format(BaudcoinUnits::BDC, ui->lnReqAmount->valueAsMpq()));
             paramCount++;
         }
         else

@@ -1,7 +1,7 @@
 /*
  * W.J. van der Laan 2011-2012
  */
-#include "freicoingui.h"
+#include "baudcoingui.h"
 #include "clientmodel.h"
 #include "walletmodel.h"
 #include "optionsmodel.h"
@@ -20,8 +20,8 @@
 #include <QSplashScreen>
 #include <QLibraryInfo>
 
-#if defined(FREICOIN_NEED_QT_PLUGINS) && !defined(_FREICOIN_QT_PLUGINS_INCLUDED)
-#define _FREICOIN_QT_PLUGINS_INCLUDED
+#if defined(BAUDCOIN_NEED_QT_PLUGINS) && !defined(_BAUDCOIN_QT_PLUGINS_INCLUDED)
+#define _BAUDCOIN_QT_PLUGINS_INCLUDED
 #define __INSURE__
 #include <QtPlugin>
 Q_IMPORT_PLUGIN(qcncodecs)
@@ -32,7 +32,7 @@ Q_IMPORT_PLUGIN(qtaccessiblewidgets)
 #endif
 
 // Need a global reference for the notifications to find the GUI
-static FreicoinGUI *guiref;
+static BaudcoinGUI *guiref;
 static QSplashScreen *splashref;
 
 static void ThreadSafeMessageBox(const std::string& message, const std::string& caption, int style)
@@ -98,7 +98,7 @@ static void QueueShutdown()
  */
 static std::string Translate(const char* psz)
 {
-    return QCoreApplication::translate("freicoin-core", psz).toStdString();
+    return QCoreApplication::translate("baudcoin-core", psz).toStdString();
 }
 
 /* Handle runaway exceptions. Shows a message box with the problem and quits the program.
@@ -106,11 +106,11 @@ static std::string Translate(const char* psz)
 static void handleRunawayException(std::exception *e)
 {
     PrintExceptionContinue(e, "Runaway exception");
-    QMessageBox::critical(0, "Runaway exception", FreicoinGUI::tr("A fatal error occured. Freicoin can no longer continue safely and will quit.") + QString("\n\n") + QString::fromStdString(strMiscWarning));
+    QMessageBox::critical(0, "Runaway exception", BaudcoinGUI::tr("A fatal error occured. Baudcoin can no longer continue safely and will quit.") + QString("\n\n") + QString::fromStdString(strMiscWarning));
     exit(1);
 }
 
-#ifndef FREICOIN_QT_TEST
+#ifndef BAUDCOIN_QT_TEST
 int main(int argc, char *argv[])
 {
     // Do this early as we don't want to bother initializing if we are just calling IPC
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
     QTextCodec::setCodecForCStrings(QTextCodec::codecForTr());
 
-    Q_INIT_RESOURCE(freicoin);
+    Q_INIT_RESOURCE(baudcoin);
     QApplication app(argc, argv);
 
     // Install global event filter that makes sure that long tooltips can be word-wrapped
@@ -129,12 +129,12 @@ int main(int argc, char *argv[])
     // Command-line options take precedence:
     ParseParameters(argc, argv);
 
-    // ... then freicoin.conf:
+    // ... then baudcoin.conf:
     if (!boost::filesystem::is_directory(GetDataDir(false)))
     {
         // This message can not be translated, as translation is not initialized yet
-        // (which not yet possible because lang=XX can be overridden in freicoin.conf in the data directory)
-        QMessageBox::critical(0, "Freicoin",
+        // (which not yet possible because lang=XX can be overridden in baudcoin.conf in the data directory)
+        QMessageBox::critical(0, "Baudcoin",
                               QString("Error: Specified data directory \"%1\" does not exist.").arg(QString::fromStdString(mapArgs["-datadir"])));
         return 1;
     }
@@ -142,12 +142,12 @@ int main(int argc, char *argv[])
 
     // Application identification (must be set before OptionsModel is initialized,
     // as it is used to locate QSettings)
-    app.setOrganizationName("Freicoin");
-    app.setOrganizationDomain("freicoin.org");
+    app.setOrganizationName("Baudcoin");
+    app.setOrganizationDomain("baudcoin.org");
     if(GetBoolArg("-testnet")) // Separate UI settings for testnet
-        app.setApplicationName("Freicoin-Qt-testnet");
+        app.setApplicationName("Baudcoin-Qt-testnet");
     else
-        app.setApplicationName("Freicoin-Qt");
+        app.setApplicationName("Baudcoin-Qt");
 
     // ... then GUI settings:
     OptionsModel optionsModel;
@@ -171,11 +171,11 @@ int main(int argc, char *argv[])
     if (qtTranslator.load("qt_" + lang_territory, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
         app.installTranslator(&qtTranslator);
 
-    // Load e.g. freicoin_de.qm (shortcut "de" needs to be defined in freicoin.qrc)
+    // Load e.g. baudcoin_de.qm (shortcut "de" needs to be defined in baudcoin.qrc)
     if (translatorBase.load(lang, ":/translations/"))
         app.installTranslator(&translatorBase);
 
-    // Load e.g. freicoin_de_DE.qm (shortcut "de_DE" needs to be defined in freicoin.qrc)
+    // Load e.g. baudcoin_de_DE.qm (shortcut "de_DE" needs to be defined in baudcoin.qrc)
     if (translator.load(lang_territory, ":/translations/"))
         app.installTranslator(&translator);
 
@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
         if (GUIUtil::GetStartOnSystemStartup())
             GUIUtil::SetStartOnSystemStartup(true);
 
-        FreicoinGUI window;
+        BaudcoinGUI window;
         guiref = &window;
         if(AppInit2())
         {
@@ -253,7 +253,7 @@ int main(int argc, char *argv[])
                 window.setWalletModel(0);
                 guiref = 0;
             }
-            // Shutdown the core and its threads, but don't exit Freicoin-Qt here
+            // Shutdown the core and its threads, but don't exit Baudcoin-Qt here
             Shutdown(NULL);
         }
         else
@@ -267,4 +267,4 @@ int main(int argc, char *argv[])
     }
     return 0;
 }
-#endif // FREICOIN_QT_TEST
+#endif // BAUDCOIN_QT_TEST
